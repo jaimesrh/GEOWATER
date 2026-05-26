@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoWater - Control de Fugas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="pantalla-login" class="login-container">
+        <div class="login-box">
+            <div class="logo-login"><i class="fa-solid fa-droplet"></i><h1>GeoWater</h1></div>
+            <p>Selecciona tu perfil para ingresar al sistema</p>
+            <div class="opciones-login">
+                <button class="btn-rol" onclick="iniciarSesion('ciudadano')">
+                    <i class="fa-solid fa-users"></i><h3>Ciudadano</h3><span>Reportar una fuga</span>
+                </button>
+                <button class="btn-rol admin-rol" onclick="iniciarSesion('admin')">
+                    <i class="fa-solid fa-building-user"></i><h3>Empresa / OOSAPAS</h3><span>Centro de Operaciones</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-principal" class="app-container oculto">
+        <aside class="sidebar">
+            <div class="logo"><i class="fa-solid fa-droplet"></i><h2>GeoWater</h2></div>
+            
+            <nav id="menu-navegacion">
+                <div class="menu-ciudadano">
+                    <div class="seccion-menu">Mi Perfil</div>
+                    <button class="nav-btn" data-target="reportar"><i class="fa-solid fa-map-location-dot"></i> Nuevo Reporte</button>
+                    <button class="nav-btn" data-target="historial"><i class="fa-solid fa-clock-rotate-left"></i> Mis Reportes</button>
+                </div>
+                
+                <div class="menu-admin">
+                    <div class="seccion-menu">Operaciones OOSAPAS</div>
+                    <button class="nav-btn" data-target="dashboard-admin"><i class="fa-solid fa-chart-line"></i> Resumen Global</button>
+                    <button class="nav-btn" data-target="mapa-operaciones"><i class="fa-solid fa-earth-americas"></i> Mapa de Fugas</button>
+                    <button class="nav-btn" data-target="panel-trabajo"><i class="fa-solid fa-clipboard-list"></i> Gestión de Órdenes</button>
+                </div>
+            </nav>
+
+            <button class="btn-salir" onclick="cerrarSesion()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+        </aside>
+
+        <main class="content">
+            <header>
+                <h1 id="titulo-seccion">Centro de Mando GeoWater</h1>
+                <div class="user-profile"><span id="nombre-usuario">Usuario</span><i class="fa-regular fa-circle-user"></i></div>
+            </header>
+
+            <section id="reportar" class="vista">
+                <div class="contenedor-mapa-form">
+                    <div class="mapa-wrapper">
+                        <h3>Indica la ubicación exacta</h3>
+                        <div id="mapa-reporte"></div>
+                    </div>
+                    <div class="form-wrapper">
+                        <h3>Detalles del reporte</h3>
+                        <form id="formulario-fuga">
+                            <input type="hidden" id="latitud" required>
+                            <input type="hidden" id="longitud" required>
+                            <div class="input-group">
+                                <label>Gravedad:</label>
+                                <select id="gravedad" required>
+                                    <option value="Baja">Baja (Goteo constante)</option>
+                                    <option value="Media">Media (Charco o flujo ligero)</option>
+                                    <option value="Alta">Alta (Chorro masivo)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Descripción detallada:</label>
+                                <textarea id="descripcion" rows="3" placeholder="Ej: Tubo principal roto..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn-enviar"><i class="fa-solid fa-paper-plane"></i> Enviar Alerta</button>
+                        </form>
+                        <p id="mensaje-exito" class="oculto">¡Reporte registrado!</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="historial" class="vista">
+                <div class="contenedor-historial">
+                    <h2>Mis Reportes Activos e Históricos</h2>
+                    <ul id="lista-ciudadano" class="lista-limpia"></ul>
+                </div>
+            </section>
+
+            <section id="dashboard-admin" class="vista">
+                <div class="tarjetas-grid">
+                    <div class="tarjeta"><i class="fa-solid fa-faucet-drip icono-rojo"></i><div><h3 id="stat-pendientes">0</h3><p>Nuevas Fugas</p></div></div>
+                    <div class="tarjeta"><i class="fa-solid fa-truck-fast icono-amarillo"></i><div><h3 id="stat-proceso">0</h3><p>Cuadrillas en Camino</p></div></div>
+                    <div class="tarjeta"><i class="fa-solid fa-check-double icono-verde"></i><div><h3 id="stat-reparadas">0</h3><p>Reparadas Hoy</p></div></div>
+                </div>
+            </section>
+
+            <section id="mapa-operaciones" class="vista">
+                <div class="contenedor-historial">
+                    <h2>Visor Geográfico de Incidencias</h2>
+                    <p class="instruccion">Visualiza todas las fugas reportadas por la ciudadanía para optimizar las rutas de reparación.</p>
+                    <div id="mapa-admin" style="height: 500px; width: 100%; border-radius: 8px; margin-top: 15px; border: 1px solid #ccc;"></div>
+                </div>
+            </section>
+
+            <section id="panel-trabajo" class="vista">
+                <div class="contenedor-historial">
+                    <h2>Control Central de Órdenes de Trabajo</h2>
+                    <div id="lista-admin" class="tarjetas-grid mt-20"></div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
