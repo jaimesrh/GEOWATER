@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GeoWater — Registrar Reporte</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <nav class="navbar navbar-dark bg-danger shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="inicio.html">💧 GeoWater</a>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="d-flex align-items-center mb-4">
+      <a href="reportes.html" class="btn btn-outline-secondary btn-sm me-3">&larr; Regresar</a>
+      <h2 class="mb-0 fw-bold">Registrar Reporte de Fuga</h2>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <form onsubmit="event.preventDefault(); crearReporte()">
+
+              <div class="form-group mb-3">
+                <label for="inputLatitud" class="fw-semibold">Latitud</label>
+                <input class="form-control" type="number" step="any" id="inputLatitud"
+                       placeholder="Ej: 22.1565">
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="inputLongitud" class="fw-semibold">Longitud</label>
+                <input class="form-control" type="number" step="any" id="inputLongitud"
+                       placeholder="Ej: -100.9855">
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="inputGravedad" class="fw-semibold">Gravedad</label>
+                <select class="form-select" id="inputGravedad">
+                  <option value="">-- Selecciona --</option>
+                  <option value="Baja">Baja</option>
+                  <option value="Media">Media</option>
+                  <option value="Alta">Alta</option>
+                </select>
+              </div>
+
+              <div class="form-group mb-4">
+                <label for="inputDescripcion" class="fw-semibold">Descripción</label>
+                <textarea class="form-control" id="inputDescripcion" rows="3"
+                          placeholder="Descripción detallada de la fuga..."></textarea>
+              </div>
+
+              <button class="btn btn-danger" id="btnGuardar" type="submit">
+                Registrar Reporte
+              </button>
+              <a href="reportes.html" class="btn btn-outline-secondary ms-2">Cancelar</a>
+
+            </form>
+          </div>
+        </div>
+        <div id="alerta" class="mt-3"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/reportes-registrar.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
