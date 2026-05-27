@@ -18,7 +18,7 @@ function crearTecnico() {
   btn.disabled = true;
   btn.textContent = 'Guardando...';
 
-  fetch(`${API}/create`, {
+  fetch(API, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
