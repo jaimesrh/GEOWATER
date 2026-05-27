@@ -1,5 +1,4 @@
-// --- 1. BASE DE DATOS SIMULADA ---
-// Esto actúa como tu tabla MySQL
+
 let baseDeDatosFugas = []; 
 const API_URL = 'http://localhost:3000/api/fugas'; // URL de tu nuevo backend
 
@@ -20,7 +19,7 @@ async function cargarFugas() {
 }
 
 
-// --- 2. LÓGICA DE NAVEGACIÓN Y LOGIN ---
+
 const appPrincipal = document.getElementById('app-principal');
 const pantallaLogin = document.getElementById('pantalla-login');
 const menuCiudadano = document.querySelector('.menu-ciudadano');
@@ -45,7 +44,7 @@ function iniciarSesion(rol) {
         document.getElementById('nombre-usuario').innerText = "Despachador OOSAPAS";
         document.querySelector('[data-target="dashboard-admin"]').click();
     }
-    actualizarVistas(); // Pinta los datos de la base de datos
+    actualizarVistas(); 
 }
 
 function cerrarSesion() {
@@ -62,8 +61,7 @@ document.querySelectorAll('.nav-btn').forEach(boton => {
         const target = boton.getAttribute('data-target');
         document.getElementById(target).classList.add('activa');
 
-        // EL TRUCO ESTÁ AQUÍ: Le damos 100 milisegundos para que la pantalla termine de 
-        // hacer la animación, y luego le decimos al mapa que se redibuje.
+      
         setTimeout(() => {
             if(target === 'reportar' && mapaReporte) mapaReporte.invalidateSize();
             if(target === 'mapa-operaciones') {
@@ -73,10 +71,10 @@ document.querySelectorAll('.nav-btn').forEach(boton => {
         }, 100);
     });
 });
-// --- 3. INICIALIZACIÓN DE MAPAS ---
+
 function inicializarMapaCiudadano() {
     if(!mapaReporte) {
-        // Centrado en tu zona (puedes ajustar las coordenadas si quieres)
+       
         mapaReporte = L.map('mapa-reporte').setView([21.935, -99.982], 14);
         
         // ESTA ES LA MAGIA: Capa de mapa SATELITAL
@@ -98,7 +96,7 @@ function inicializarMapaAdmin() {
     if(!mapaAdmin) {
         mapaAdmin = L.map('mapa-admin').setView([21.935, -99.982], 14);
         
-        // EL MISMO MAPA SATELITAL PARA EL ADMIN
+     
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 19,
             attribution: 'Tiles &copy; Esri'
@@ -109,9 +107,9 @@ function inicializarMapaAdmin() {
 
 
 
-// --- 4. MOTOR PRINCIPAL: CRUD DE LA BASE DE DATOS SIMULADA ---
 
-// A. Crear nuevo reporte (POST)
+
+
 document.getElementById('formulario-fuga').addEventListener('submit', async function(e) {
     e.preventDefault();
     const lat = document.getElementById('latitud').value;
@@ -151,7 +149,7 @@ document.getElementById('formulario-fuga').addEventListener('submit', async func
     }
 });
 
-// B. Actualizar estado desde el panel de la empresa (PUT)
+
 window.cambiarEstado = async function(id, nuevoEstado) {
     try {
         // Enviar actualización al backend
@@ -167,7 +165,6 @@ window.cambiarEstado = async function(id, nuevoEstado) {
     }
 }
 
-// C. Función Maestra que Dibuja Todo (SELECT)
 function actualizarVistas() {
     const listaCiudadano = document.getElementById('lista-ciudadano');
     const listaAdmin = document.getElementById('lista-admin');
@@ -177,11 +174,11 @@ function actualizarVistas() {
     
     let stats = { pendiente: 0, proceso: 0, reparada: 0 };
 
-    // Recorrer la BD en orden inverso (más nuevos primero)
+ 
     [...baseDeDatosFugas].reverse().forEach(fuga => {
-        stats[fuga.estado]++; // Sumar a las estadísticas
+        stats[fuga.estado]++; 
 
-        // 1. Dibujar Tarjeta para Ciudadano
+        
         let textoEstado = fuga.estado === 'pendiente' ? 'Reporte Enviado' : 
                           fuga.estado === 'proceso' ? 'Cuadrilla en Camino' : 'Reparado';
         
@@ -193,7 +190,7 @@ function actualizarVistas() {
             </li>
         `;
 
-        // 2. Dibujar Tarjeta Avanzada para Administrador
+      
         listaAdmin.innerHTML += `
             <div class="card-admin">
                 <div style="display:flex; justify-content:space-between;">
@@ -216,17 +213,17 @@ function actualizarVistas() {
         listaAdmin.innerHTML = '<p>No hay órdenes de trabajo.</p>';
     }
 
-    // 3. Actualizar Dashboard Admin
+    
     document.getElementById('stat-pendientes').innerText = stats.pendiente;
     document.getElementById('stat-proceso').innerText = stats.proceso;
     document.getElementById('stat-reparadas').innerText = stats.reparada;
 
-    // 4. Actualizar Mapa Admin
+    
     if(mapaAdmin) dibujarPinesAdmin();
 }
 
 function dibujarPinesAdmin() {
-    // Limpiar pines viejos
+    
     marcadoresAdmin.forEach(m => mapaAdmin.removeLayer(m));
     marcadoresAdmin = [];
 
@@ -234,7 +231,7 @@ function dibujarPinesAdmin() {
         // Colores según estado simulando íconos
         let color = fuga.estado === 'pendiente' ? 'red' : fuga.estado === 'proceso' ? 'orange' : 'green';
         
-        // Crear un pin básico circular con CSS para no depender de imágenes externas
+       
         let customIcon = L.divIcon({
             className: 'custom-pin',
             html: `<div style="background-color:${color}; width:20px; height:20px; border-radius:50%; border:2px solid white; box-shadow:0 0 4px rgba(0,0,0,0.5);"></div>`,
