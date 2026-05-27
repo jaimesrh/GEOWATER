@@ -1,0 +1,3 @@
+Estar en acarpeta backend para ejectuar los comandos y si correcta funcion
+node crearTablas.js
+node server.js
