@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GeoWater — Editar Técnico</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <nav class="navbar navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="inicio.html">💧 GeoWater</a>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="d-flex align-items-center mb-4">
+      <a href="tecnicos.html" class="btn btn-outline-secondary btn-sm me-3">&larr; Regresar</a>
+      <h2 class="mb-0 fw-bold">Editar Técnico</h2>
+    </div>
+
+    <div id="alerta"></div>
+
+    <!-- Spinner -->
+    <div id="spinnerCarga" class="text-center py-4">
+      <div class="spinner-border text-primary"></div>
+      <p class="text-muted mt-2">Cargando datos...</p>
+    </div>
+
+    <!-- Formulario -->
+    <div id="formulario" class="d-none">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <form onsubmit="event.preventDefault(); actualizar()">
+
+                <div class="form-group mb-3">
+                  <label class="fw-semibold">ID</label>
+                  <input type="text" id="mostrarId" class="form-control bg-light" disabled>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="inputNombre" class="fw-semibold">Nombre completo</label>
+                  <input class="form-control" type="text" id="inputNombre">
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="inputEspecialidad" class="fw-semibold">Especialidad</label>
+                  <input class="form-control" type="text" id="inputEspecialidad">
+                </div>
+
+                <div class="form-group mb-4">
+                  <label for="inputDisponibilidad" class="fw-semibold">Disponibilidad</label>
+                  <select class="form-select" id="inputDisponibilidad">
+                    <option value="Disponible">Disponible</option>
+                    <option value="Ocupado">Ocupado</option>
+                  </select>
+                </div>
+
+                <button class="btn btn-warning" id="btnActualizar" type="submit">
+                  Actualizar Técnico
+                </button>
+                <a href="tecnicos.html" class="btn btn-outline-secondary ms-2">Cancelar</a>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error ID inválido -->
+    <div id="errorId" class="d-none text-center py-4">
+      <p class="text-danger fw-semibold">ID de técnico no válido.</p>
+      <a href="tecnicos.html" class="btn btn-primary btn-sm">Volver a la lista</a>
+    </div>
+  </div>
+
+  <script src="./js/tecnicos-editar.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
